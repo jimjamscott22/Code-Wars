@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /s \"C:\\\\Users\\\\jimja\\\\github_repos\\\\Web_Dev\\\\CodingChallenges-v1\")",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)"
+    ]
+  }
+}
