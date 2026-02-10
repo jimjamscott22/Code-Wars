@@ -3,11 +3,11 @@ import type { Difficulty } from '../types.ts'
 function getDifficultyClasses(difficulty: Difficulty): string {
   switch (difficulty) {
     case 'Beginner':
-      return 'text-green-600 bg-green-100'
+      return 'text-emerald-700 bg-emerald-100'
     case 'Intermediate':
-      return 'text-orange-600 bg-orange-100'
+      return 'text-amber-700 bg-amber-100'
     case 'Advanced':
-      return 'text-red-600 bg-red-100'
+      return 'text-rose-700 bg-rose-100'
   }
 }
 

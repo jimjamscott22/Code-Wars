@@ -17,15 +17,15 @@ export default function CategoryListPage() {
   const lang = language as Language
 
   return (
-    <div>
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">
+    <div className="space-y-6">
+      <div className="rounded-2xl border border-white/80 bg-white/85 p-5 sm:p-6">
+        <h2 className="text-2xl font-bold text-slate-900">
           {LANGUAGE_LABELS[lang]} Challenges
         </h2>
-        <p className="text-gray-600 text-sm mt-1">Choose a category to get started.</p>
+        <p className="text-slate-600 text-sm mt-1">Choose a category to get started and track progress from the top category bar.</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {CATEGORIES.map(cat => {
           const catChallenges = getChallengesByCategory(cat as Category)
           const completedInCat = catChallenges.filter(c => isCompleted(c.id)).length
