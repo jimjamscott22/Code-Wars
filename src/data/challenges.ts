@@ -92,6 +92,432 @@ export const challenges: Challenge[] = [
 }`,
     },
   },
+  {
+    id: 'countdown-loop',
+    title: 'Countdown Loop',
+    category: 'basics',
+    difficulty: 'Beginner',
+    description: 'Write a function that returns a countdown from n to 1 as an array.',
+    examples: ['countdown(5) → [5,4,3,2,1]', 'countdown(1) → [1]'],
+    solutions: {
+      python: `def countdown(n):
+    result = []
+    for i in range(n, 0, -1):
+        result.append(i)
+    return result`,
+      javascript: `function countdown(n) {
+    const result = [];
+    for (let i = n; i >= 1; i--) {
+        result.push(i);
+    }
+    return result;
+}`,
+      java: `public static List<Integer> countdown(int n) {
+    List<Integer> result = new ArrayList<>();
+    for (int i = n; i >= 1; i--) {
+        result.add(i);
+    }
+    return result;
+}`,
+    },
+  },
+  {
+    id: 'count-letter',
+    title: 'Count Letter Occurrences',
+    category: 'basics',
+    difficulty: 'Beginner',
+    description:
+      'Write a function that counts how many times a target letter appears in a word.',
+    examples: ["count_letter('banana', 'a') → 3", "count_letter('apple', 'z') → 0"],
+    solutions: {
+      python: `def count_letter(word, target):
+    count = 0
+    for char in word:
+        if char == target:
+            count += 1
+    return count`,
+      javascript: `function countLetter(word, target) {
+    let count = 0;
+    for (const char of word) {
+        if (char === target) {
+            count++;
+        }
+    }
+    return count;
+}`,
+      java: `public static int countLetter(String word, char target) {
+    int count = 0;
+    for (int i = 0; i < word.length(); i++) {
+        if (word.charAt(i) == target) {
+            count++;
+        }
+    }
+    return count;
+}`,
+    },
+  },
+  {
+    id: 'rectangle-methods',
+    title: 'Rectangle Methods',
+    category: 'basics',
+    difficulty: 'Beginner',
+    description:
+      'Create a Rectangle class with width and height, and methods to return area and perimeter.',
+    examples: [
+      'Rectangle(4, 3).area() → 12',
+      'Rectangle(4, 3).perimeter() → 14',
+    ],
+    solutions: {
+      python: `class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+    def perimeter(self):
+        return 2 * (self.width + self.height)`,
+      javascript: `class Rectangle {
+    constructor(width, height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    area() {
+        return this.width * this.height;
+    }
+
+    perimeter() {
+        return 2 * (this.width + this.height);
+    }
+}`,
+      java: `class Rectangle {
+    private int width;
+    private int height;
+
+    public Rectangle(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public int area() {
+        return width * height;
+    }
+
+    public int perimeter() {
+        return 2 * (width + height);
+    }
+}`,
+    },
+  },
+  {
+    id: 'counter-class',
+    title: 'Counter Class',
+    category: 'basics',
+    difficulty: 'Beginner',
+    description:
+      'Build a Counter class that starts at 0 and has increment, decrement, and get_value methods.',
+    examples: [
+      'counter.increment(); counter.increment(); counter.get_value() → 2',
+      'counter.decrement(); counter.get_value() → 1',
+    ],
+    solutions: {
+      python: `class Counter:
+    def __init__(self):
+        self.value = 0
+
+    def increment(self):
+        self.value += 1
+
+    def decrement(self):
+        self.value -= 1
+
+    def get_value(self):
+        return self.value`,
+      javascript: `class Counter {
+    constructor() {
+        this.value = 0;
+    }
+
+    increment() {
+        this.value += 1;
+    }
+
+    decrement() {
+        this.value -= 1;
+    }
+
+    getValue() {
+        return this.value;
+    }
+}`,
+      java: `class Counter {
+    private int value;
+
+    public Counter() {
+        this.value = 0;
+    }
+
+    public void increment() {
+        value++;
+    }
+
+    public void decrement() {
+        value--;
+    }
+
+    public int getValue() {
+        return value;
+    }
+}`,
+    },
+  },
+  {
+    id: 'larger-number',
+    title: 'Larger Number',
+    category: 'basics',
+    difficulty: 'Beginner',
+    description:
+      'Write a function that returns the larger of two numbers. If they are equal, return either one.',
+    examples: ['larger_number(8, 3) → 8', 'larger_number(5, 5) → 5'],
+    solutions: {
+      python: `def larger_number(a, b):
+    if a >= b:
+        return a
+    return b`,
+      javascript: `function largerNumber(a, b) {
+    if (a >= b) {
+        return a;
+    }
+    return b;
+}`,
+      java: `public static int largerNumber(int a, int b) {
+    if (a >= b) {
+        return a;
+    }
+    return b;
+}`,
+    },
+  },
+  {
+    id: 'even-or-odd',
+    title: 'Even or Odd',
+    category: 'basics',
+    difficulty: 'Beginner',
+    description:
+      'Write a function that returns "Even" if a number is even and "Odd" if it is odd.',
+    examples: ['even_or_odd(4) → "Even"', 'even_or_odd(7) → "Odd"'],
+    solutions: {
+      python: `def even_or_odd(n):
+    if n % 2 == 0:
+        return "Even"
+    return "Odd"`,
+      javascript: `function evenOrOdd(n) {
+    if (n % 2 === 0) {
+        return "Even";
+    }
+    return "Odd";
+}`,
+      java: `public static String evenOrOdd(int n) {
+    if (n % 2 == 0) {
+        return "Even";
+    }
+    return "Odd";
+}`,
+    },
+  },
+  {
+    id: 'grade-label',
+    title: 'Grade Label',
+    category: 'basics',
+    difficulty: 'Beginner',
+    description:
+      'Given a score from 0 to 100, return A (90+), B (80+), C (70+), D (60+), or F.',
+    examples: ['grade_label(92) → "A"', 'grade_label(73) → "C"'],
+    solutions: {
+      python: `def grade_label(score):
+    if score >= 90:
+        return "A"
+    if score >= 80:
+        return "B"
+    if score >= 70:
+        return "C"
+    if score >= 60:
+        return "D"
+    return "F"`,
+      javascript: `function gradeLabel(score) {
+    if (score >= 90) return "A";
+    if (score >= 80) return "B";
+    if (score >= 70) return "C";
+    if (score >= 60) return "D";
+    return "F";
+}`,
+      java: `public static String gradeLabel(int score) {
+    if (score >= 90) return "A";
+    if (score >= 80) return "B";
+    if (score >= 70) return "C";
+    if (score >= 60) return "D";
+    return "F";
+}`,
+    },
+  },
+  {
+    id: 'is-leap-year',
+    title: 'Leap Year Check',
+    category: 'basics',
+    difficulty: 'Beginner',
+    description:
+      'Write a function that returns true if a year is a leap year, otherwise false.',
+    examples: ['is_leap_year(2024) → true', 'is_leap_year(1900) → false'],
+    solutions: {
+      python: `def is_leap_year(year):
+    return year % 400 == 0 or (year % 4 == 0 and year % 100 != 0)`,
+      javascript: `function isLeapYear(year) {
+    return year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
+}`,
+      java: `public static boolean isLeapYear(int year) {
+    return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
+}`,
+    },
+  },
+  {
+    id: 'sum-positive-list',
+    title: 'Sum Positive Numbers',
+    category: 'basics',
+    difficulty: 'Beginner',
+    description:
+      'Write a function that returns the sum of only the positive numbers in a list or array.',
+    examples: ['sum_positive([1, -2, 3, 4]) → 8', 'sum_positive([-5, -1]) → 0'],
+    solutions: {
+      python: `def sum_positive(nums):
+    total = 0
+    for n in nums:
+        if n > 0:
+            total += n
+    return total`,
+      javascript: `function sumPositive(nums) {
+    let total = 0;
+    for (const n of nums) {
+        if (n > 0) {
+            total += n;
+        }
+    }
+    return total;
+}`,
+      java: `public static int sumPositive(int[] nums) {
+    int total = 0;
+    for (int n : nums) {
+        if (n > 0) {
+            total += n;
+        }
+    }
+    return total;
+}`,
+    },
+  },
+  {
+    id: 'filter-even-list',
+    title: 'Filter Even Numbers',
+    category: 'basics',
+    difficulty: 'Beginner',
+    description:
+      'Write a function that returns only the even numbers from a list or array, preserving order.',
+    examples: ['filter_even([1,2,3,4,5,6]) → [2,4,6]', 'filter_even([1,3,5]) → []'],
+    solutions: {
+      python: `def filter_even(nums):
+    result = []
+    for n in nums:
+        if n % 2 == 0:
+            result.append(n)
+    return result`,
+      javascript: `function filterEven(nums) {
+    const result = [];
+    for (const n of nums) {
+        if (n % 2 === 0) {
+            result.push(n);
+        }
+    }
+    return result;
+}`,
+      java: `public static List<Integer> filterEven(int[] nums) {
+    List<Integer> result = new ArrayList<>();
+    for (int n : nums) {
+        if (n % 2 == 0) {
+            result.add(n);
+        }
+    }
+    return result;
+}`,
+    },
+  },
+  {
+    id: 'smallest-in-list',
+    title: 'Smallest in List',
+    category: 'basics',
+    difficulty: 'Beginner',
+    description:
+      'Write a function that returns the smallest number in a non-empty list or array.',
+    examples: ['smallest([5,2,9,1]) → 1', 'smallest([-3,-7,-2]) → -7'],
+    solutions: {
+      python: `def smallest(nums):
+    smallest_value = nums[0]
+    for n in nums:
+        if n < smallest_value:
+            smallest_value = n
+    return smallest_value`,
+      javascript: `function smallest(nums) {
+    let smallestValue = nums[0];
+    for (const n of nums) {
+        if (n < smallestValue) {
+            smallestValue = n;
+        }
+    }
+    return smallestValue;
+}`,
+      java: `public static int smallest(int[] nums) {
+    int smallestValue = nums[0];
+    for (int n : nums) {
+        if (n < smallestValue) {
+            smallestValue = n;
+        }
+    }
+    return smallestValue;
+}`,
+    },
+  },
+  {
+    id: 'contains-target',
+    title: 'Contains Target',
+    category: 'basics',
+    difficulty: 'Beginner',
+    description:
+      'Write a function that checks whether a list or array contains a target value.',
+    examples: ['contains_target([1,4,6], 4) → true', 'contains_target([1,4,6], 9) → false'],
+    solutions: {
+      python: `def contains_target(nums, target):
+    for n in nums:
+        if n == target:
+            return True
+    return False`,
+      javascript: `function containsTarget(nums, target) {
+    for (const n of nums) {
+        if (n === target) {
+            return true;
+        }
+    }
+    return false;
+}`,
+      java: `public static boolean containsTarget(int[] nums, int target) {
+    for (int n : nums) {
+        if (n == target) {
+            return true;
+        }
+    }
+    return false;
+}`,
+    },
+  },
 
   // ─── Strings ───────────────────────────────────────────
   {
