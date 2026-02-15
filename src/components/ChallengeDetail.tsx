@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { CheckCircle, Circle, ArrowLeft, ClipboardCopy, Check } from 'lucide-react'
 import type { Challenge, Language } from '../types.ts'
 import DifficultyBadge from './DifficultyBadge.tsx'
+import CodingPlayground from './CodingPlayground.tsx'
 
 interface ChallengeDetailProps {
   challenge: Challenge
@@ -60,6 +61,8 @@ export default function ChallengeDetail({ challenge, language, isCompleted, onMa
           </ul>
         </div>
       </div>
+
+      <CodingPlayground language={language} starterCode={challenge.solutions[language]} />
 
       <div className="flex flex-wrap gap-3">
         <button

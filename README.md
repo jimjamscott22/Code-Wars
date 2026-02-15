@@ -8,6 +8,7 @@ A static React app for browsing and solving coding challenges in Python, JavaScr
 - **12 challenges** across 5 categories (Basics, Strings, Hash Maps, Trees, Sorting)
 - **Difficulty levels** — Beginner, Intermediate, Advanced
 - **Solution reveal** — show/hide solution code per challenge
+- **Coding Playground** — run JavaScript and Python code in-browser per challenge
 - **Progress tracking** — mark challenges complete, persisted in localStorage
 - **Category browsing** — challenges organized by topic with completion indicators
 
@@ -52,6 +53,7 @@ src/
   components/
     Layout.tsx           Header, breadcrumbs, language selector
     ChallengeDetail.tsx  Challenge view with solution toggle
+    CodingPlayground.tsx In-browser code editor + runner
     ChallengeCard.tsx    Challenge list card
     CategoryCard.tsx     Category grid card
     DifficultyBadge.tsx  Colored difficulty pill
