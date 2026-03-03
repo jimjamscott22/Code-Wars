@@ -1,9 +1,10 @@
 import { Outlet, Link, useParams } from 'react-router-dom'
-import { Trophy, Home, Code2, FolderKanban, ChevronRight, RotateCcw } from 'lucide-react'
+import { Trophy, Home, Code2, FolderKanban, ChevronRight, RotateCcw, Moon, Sun } from 'lucide-react'
 import LanguageSelector from './LanguageSelector.tsx'
 import ProgressBar from './ProgressBar.tsx'
 import ReferenceSidebar from './ReferenceSidebar.tsx'
 import { useProgress } from '../hooks/useProgress.ts'
+import { useTheme } from '../hooks/useTheme.ts'
 import { challenges, getChallengesByCategory } from '../data/challenges.ts'
 import { CATEGORIES, CATEGORY_LABELS, LANGUAGES, LANGUAGE_LABELS } from '../types.ts'
 import type { Language, Category } from '../types.ts'
@@ -11,6 +12,7 @@ import type { Language, Category } from '../types.ts'
 export default function Layout() {
   const { language, category, challengeId } = useParams()
   const { completedCount, isCompleted, resetProgress } = useProgress()
+  const { isDark, toggleTheme } = useTheme()
   const activeLanguage = language && LANGUAGES.includes(language as Language)
     ? (language as Language)
     : undefined
@@ -40,6 +42,15 @@ export default function Layout() {
 
               <div className="flex flex-wrap items-center gap-3">
                 <ProgressBar completed={completedCount} total={challenges.length} />
+                <button
+                  type="button"
+                  onClick={toggleTheme}
+                  aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+                  className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-200 bg-white text-slate-600 text-sm hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                >
+                  {isDark ? <Sun size={16} /> : <Moon size={16} />}
+                  {isDark ? 'Light mode' : 'Dark mode'}
+                </button>
                 {completedCount > 0 && (
                   <button
                     type="button"
