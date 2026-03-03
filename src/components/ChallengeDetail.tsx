@@ -8,11 +8,20 @@ import CodingPlayground from './CodingPlayground.tsx'
 interface ChallengeDetailProps {
   challenge: Challenge
   language: Language
+  editorCode: string
   isCompleted: boolean
+  onEditorCodeChange: (value: string) => void
   onMarkComplete: () => void
 }
 
-export default function ChallengeDetail({ challenge, language, isCompleted, onMarkComplete }: ChallengeDetailProps) {
+export default function ChallengeDetail({
+  challenge,
+  language,
+  editorCode,
+  isCompleted,
+  onEditorCodeChange,
+  onMarkComplete,
+}: ChallengeDetailProps) {
   const [showSolution, setShowSolution] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -62,7 +71,12 @@ export default function ChallengeDetail({ challenge, language, isCompleted, onMa
         </div>
       </div>
 
-      <CodingPlayground language={language} starterCode={challenge.solutions[language]} />
+      <CodingPlayground
+        language={language}
+        starterCode={challenge.solutions[language]}
+        code={editorCode}
+        onCodeChange={onEditorCodeChange}
+      />
 
       <div className="flex flex-wrap gap-3">
         <button

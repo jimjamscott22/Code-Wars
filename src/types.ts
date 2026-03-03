@@ -32,3 +32,33 @@ export interface Challenge {
   examples: string[]
   solutions: Record<Language, string>
 }
+
+export type ChatRole = 'user' | 'assistant'
+
+export interface ChatMessage {
+  id: string
+  role: ChatRole
+  content: string
+  createdAt: number
+}
+
+export interface ChallengeChatContext {
+  challengeId: string
+  title: string
+  category: Category
+  language: Language
+  description: string
+  examples: string[]
+  editorCode: string
+}
+
+export interface ChatRequest {
+  context: ChallengeChatContext
+  messages: ChatMessage[]
+}
+
+export interface ChatResponse {
+  message: ChatMessage
+  provider: 'ollama' | 'lm-studio'
+  model: string
+}

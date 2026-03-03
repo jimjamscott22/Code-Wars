@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Play, RotateCcw, LoaderCircle, Terminal } from 'lucide-react'
 import type { Language } from '../types.ts'
 
 interface CodingPlaygroundProps {
   language: Language
   starterCode: string
+  code: string
+  onCodeChange: (value: string) => void
 }
 
 interface PyodideLike {
@@ -82,25 +84,23 @@ function formatRuntimeValue(value: unknown): string | null {
   }
 }
 
-export default function CodingPlayground({ language, starterCode }: CodingPlaygroundProps) {
-  const [code, setCode] = useState(starterCode)
+export default function CodingPlayground({ language, starterCode, code, onCodeChange }: CodingPlaygroundProps) {
   const [output, setOutput] = useState('Run code to see output.')
   const [isRunning, setIsRunning] = useState(false)
 
   useEffect(() => {
-    setCode(starterCode)
     setOutput('Run code to see output.')
   }, [language, starterCode])
 
-  const languageLabel = useMemo(() => {
-    if (language === 'python') {
-      return 'Python'
-    }
-    if (language === 'javascript') {
-      return 'JavaScript'
-    }
-    return 'Java'
-  }, [language])
+  const languageLabel = language === 'python'
+    ? 'Python'
+    : language === 'javascript'
+      ? 'JavaScript'
+      : language === 'java'
+        ? 'Java'
+        : language === 'sql'
+          ? 'SQL'
+          : 'C'
 
   const runJavaScript = () => {
     const logs: string[] = []
@@ -172,8 +172,8 @@ export default function CodingPlayground({ language, starterCode }: CodingPlaygr
   }
 
   const handleRun = async () => {
-    if (language === 'java') {
-      setOutput('Java execution is not enabled in-browser yet. Use Python or JavaScript for live runs.')
+    if (language !== 'python' && language !== 'javascript') {
+      setOutput(`${languageLabel} execution is not enabled in-browser yet. Use Python or JavaScript for live runs.`)
       return
     }
 
@@ -191,7 +191,7 @@ export default function CodingPlayground({ language, starterCode }: CodingPlaygr
   }
 
   const handleReset = () => {
-    setCode(starterCode)
+    onCodeChange(starterCode)
     setOutput('Starter code restored.')
   }
 
@@ -214,7 +214,7 @@ export default function CodingPlayground({ language, starterCode }: CodingPlaygr
       <label className="block text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">Editor</label>
       <textarea
         value={code}
-        onChange={event => setCode(event.target.value)}
+        onChange={event => onCodeChange(event.target.value)}
         className="w-full min-h-72 rounded-xl border border-slate-300 bg-slate-950 text-slate-100 p-4 font-mono text-sm leading-6 focus:outline-none focus:ring-2 focus:ring-indigo-400"
         spellCheck={false}
       />
