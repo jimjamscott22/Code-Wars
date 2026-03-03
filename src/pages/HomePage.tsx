@@ -6,12 +6,16 @@ const LANGUAGE_COLORS: Record<string, string> = {
   python: 'from-blue-500 to-blue-700',
   javascript: 'from-amber-400 to-orange-500',
   java: 'from-rose-500 to-red-700',
+  sql: 'from-emerald-500 to-teal-700',
+  c: 'from-violet-500 to-purple-700',
 }
 
 const LANGUAGE_NOTES: Record<string, string> = {
   python: 'Readable syntax, great for logic and interview prep.',
   javascript: 'Web-native language with versatile problem solving patterns.',
   java: 'Strong typing and OOP structure for robust solutions.',
+  sql: 'Declarative querying for data manipulation and database logic.',
+  c: 'Low-level power with manual memory control and pointers.',
 }
 
 export default function HomePage() {
@@ -25,7 +29,7 @@ export default function HomePage() {
         </p>
       </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {LANGUAGES.map((lang) => (
           <Link
             key={lang}

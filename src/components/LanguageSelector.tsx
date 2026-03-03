@@ -13,17 +13,21 @@ function loadLastWorkedMap(): LastWorkedMap {
     python: null,
     javascript: null,
     java: null,
+    sql: null,
+    c: null,
   }
 
   try {
     const raw = window.localStorage.getItem(LAST_WORKED_STORAGE_KEY)
     if (!raw) return initialMap
     const parsed = JSON.parse(raw) as Partial<Record<Language, number | null>>
-    return {
-      python: typeof parsed.python === 'number' ? parsed.python : null,
-      javascript: typeof parsed.javascript === 'number' ? parsed.javascript : null,
-      java: typeof parsed.java === 'number' ? parsed.java : null,
+    const result = { ...initialMap }
+    for (const lang of LANGUAGES) {
+      if (typeof parsed[lang] === 'number') {
+        result[lang] = parsed[lang]
+      }
     }
+    return result
   } catch {
     return initialMap
   }

@@ -18,6 +18,21 @@ export const challenges: Challenge[] = [
       java: `public static String hello(String name) {
     return "Hello, " + name + "!";
 }`,
+      sql: `-- Using a scalar function
+CREATE FUNCTION hello(name VARCHAR(100))
+RETURNS VARCHAR(120) AS $$
+BEGIN
+    RETURN 'Hello, ' || name || '!';
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT hello('Alice');`,
+      c: `#include <stdio.h>
+#include <string.h>
+
+void hello(const char *name, char *result) {
+    sprintf(result, "Hello, %s!", name);
+}`,
     },
   },
   {
@@ -38,6 +53,22 @@ export const challenges: Challenge[] = [
     return sum;
 }`,
       java: `public static int sumEvens(int n) {
+    int sum = 0;
+    for (int i = 2; i <= n; i += 2) {
+        sum += i;
+    }
+    return sum;
+}`,
+      sql: `-- Sum even numbers from 1 to n using a recursive CTE
+WITH RECURSIVE nums AS (
+    SELECT 2 AS i
+    UNION ALL
+    SELECT i + 2 FROM nums WHERE i + 2 <= 10 -- replace 10 with n
+)
+SELECT SUM(i) AS sum_evens FROM nums;`,
+      c: `#include <stdio.h>
+
+int sumEvens(int n) {
     int sum = 0;
     for (int i = 2; i <= n; i += 2) {
         sum += i;
@@ -90,6 +121,30 @@ export const challenges: Challenge[] = [
     }
     return result;
 }`,
+      sql: `-- FizzBuzz using CASE with a number sequence
+WITH RECURSIVE nums AS (
+    SELECT 1 AS i
+    UNION ALL
+    SELECT i + 1 FROM nums WHERE i < 15 -- replace 15 with n
+)
+SELECT CASE
+    WHEN i % 15 = 0 THEN 'FizzBuzz'
+    WHEN i % 3 = 0 THEN 'Fizz'
+    WHEN i % 5 = 0 THEN 'Buzz'
+    ELSE CAST(i AS CHAR)
+END AS result
+FROM nums;`,
+      c: `#include <stdio.h>
+#include <string.h>
+
+void fizzbuzz(int n, char result[][9]) {
+    for (int i = 1; i <= n; i++) {
+        if (i % 15 == 0) strcpy(result[i-1], "FizzBuzz");
+        else if (i % 3 == 0) strcpy(result[i-1], "Fizz");
+        else if (i % 5 == 0) strcpy(result[i-1], "Buzz");
+        else sprintf(result[i-1], "%d", i);
+    }
+}`,
     },
   },
   {
@@ -118,6 +173,20 @@ export const challenges: Challenge[] = [
         result.add(i);
     }
     return result;
+}`,
+      sql: `-- Countdown using a recursive CTE
+WITH RECURSIVE countdown AS (
+    SELECT 5 AS i -- replace 5 with n
+    UNION ALL
+    SELECT i - 1 FROM countdown WHERE i > 1
+)
+SELECT i FROM countdown;`,
+      c: `#include <stdio.h>
+
+void countdown(int n, int *result) {
+    for (int i = 0; i < n; i++) {
+        result[i] = n - i;
+    }
 }`,
     },
   },
@@ -149,6 +218,20 @@ export const challenges: Challenge[] = [
     int count = 0;
     for (int i = 0; i < word.length(); i++) {
         if (word.charAt(i) == target) {
+            count++;
+        }
+    }
+    return count;
+}`,
+      sql: `-- Count occurrences of a letter in a string
+SELECT LENGTH('banana') - LENGTH(REPLACE('banana', 'a', ''))
+    AS letter_count;`,
+      c: `#include <string.h>
+
+int countLetter(const char *word, char target) {
+    int count = 0;
+    for (int i = 0; word[i] != '\\0'; i++) {
+        if (word[i] == target) {
             count++;
         }
     }
@@ -208,6 +291,31 @@ export const challenges: Challenge[] = [
     public int perimeter() {
         return 2 * (width + height);
     }
+}`,
+      sql: `-- Rectangle area and perimeter as computed columns
+CREATE TABLE rectangles (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    width INT NOT NULL,
+    height INT NOT NULL
+);
+
+SELECT width, height,
+       width * height AS area,
+       2 * (width + height) AS perimeter
+FROM rectangles;`,
+      c: `#include <stdio.h>
+
+typedef struct {
+    int width;
+    int height;
+} Rectangle;
+
+int area(Rectangle r) {
+    return r.width * r.height;
+}
+
+int perimeter(Rectangle r) {
+    return 2 * (r.width + r.height);
 }`,
     },
   },
@@ -271,6 +379,26 @@ export const challenges: Challenge[] = [
         return value;
     }
 }`,
+      sql: `-- Counter using a table with increment/decrement via UPDATE
+CREATE TABLE counter (value INT NOT NULL DEFAULT 0);
+INSERT INTO counter VALUES (0);
+
+-- Increment
+UPDATE counter SET value = value + 1;
+-- Decrement
+UPDATE counter SET value = value - 1;
+-- Get value
+SELECT value FROM counter;`,
+      c: `#include <stdio.h>
+
+typedef struct {
+    int value;
+} Counter;
+
+void counter_init(Counter *c) { c->value = 0; }
+void increment(Counter *c) { c->value++; }
+void decrement(Counter *c) { c->value--; }
+int getValue(Counter *c) { return c->value; }`,
     },
   },
   {
@@ -298,6 +426,17 @@ export const challenges: Challenge[] = [
     }
     return b;
 }`,
+      sql: `-- Return the larger of two values
+SELECT GREATEST(8, 3) AS larger_number;
+
+-- Or using CASE
+SELECT CASE WHEN 8 >= 3 THEN 8 ELSE 3 END AS larger_number;`,
+      c: `int largerNumber(int a, int b) {
+    if (a >= b) {
+        return a;
+    }
+    return b;
+}`,
     },
   },
   {
@@ -320,6 +459,17 @@ export const challenges: Challenge[] = [
     return "Odd";
 }`,
       java: `public static String evenOrOdd(int n) {
+    if (n % 2 == 0) {
+        return "Even";
+    }
+    return "Odd";
+}`,
+      sql: `-- Even or odd using CASE and modulo
+SELECT CASE WHEN 4 % 2 = 0 THEN 'Even' ELSE 'Odd' END
+    AS result;`,
+      c: `#include <string.h>
+
+const char* evenOrOdd(int n) {
     if (n % 2 == 0) {
         return "Even";
     }
@@ -360,6 +510,21 @@ export const challenges: Challenge[] = [
     if (score >= 60) return "D";
     return "F";
 }`,
+      sql: `-- Grade label using CASE
+SELECT CASE
+    WHEN 92 >= 90 THEN 'A'
+    WHEN 92 >= 80 THEN 'B'
+    WHEN 92 >= 70 THEN 'C'
+    WHEN 92 >= 60 THEN 'D'
+    ELSE 'F'
+END AS grade;`,
+      c: `const char* gradeLabel(int score) {
+    if (score >= 90) return "A";
+    if (score >= 80) return "B";
+    if (score >= 70) return "C";
+    if (score >= 60) return "D";
+    return "F";
+}`,
     },
   },
   {
@@ -377,6 +542,17 @@ export const challenges: Challenge[] = [
     return year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
 }`,
       java: `public static boolean isLeapYear(int year) {
+    return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
+}`,
+      sql: `-- Leap year check using CASE
+SELECT CASE
+    WHEN 2024 % 400 = 0 THEN 'true'
+    WHEN 2024 % 4 = 0 AND 2024 % 100 != 0 THEN 'true'
+    ELSE 'false'
+END AS is_leap_year;`,
+      c: `#include <stdbool.h>
+
+bool isLeapYear(int year) {
     return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
 }`,
     },
@@ -410,6 +586,19 @@ export const challenges: Challenge[] = [
     for (int n : nums) {
         if (n > 0) {
             total += n;
+        }
+    }
+    return total;
+}`,
+      sql: `-- Sum only positive values from a table column
+SELECT COALESCE(SUM(value), 0) AS sum_positive
+FROM numbers
+WHERE value > 0;`,
+      c: `int sumPositive(int *nums, int len) {
+    int total = 0;
+    for (int i = 0; i < len; i++) {
+        if (nums[i] > 0) {
+            total += nums[i];
         }
     }
     return total;
@@ -449,6 +638,19 @@ export const challenges: Challenge[] = [
     }
     return result;
 }`,
+      sql: `-- Filter even values from a table
+SELECT value FROM numbers
+WHERE value % 2 = 0
+ORDER BY id;`,
+      c: `int filterEven(int *nums, int len, int *result) {
+    int count = 0;
+    for (int i = 0; i < len; i++) {
+        if (nums[i] % 2 == 0) {
+            result[count++] = nums[i];
+        }
+    }
+    return count;
+}`,
     },
   },
   {
@@ -480,6 +682,17 @@ export const challenges: Challenge[] = [
     for (int n : nums) {
         if (n < smallestValue) {
             smallestValue = n;
+        }
+    }
+    return smallestValue;
+}`,
+      sql: `-- Find the smallest value in a column
+SELECT MIN(value) AS smallest FROM numbers;`,
+      c: `int smallest(int *nums, int len) {
+    int smallestValue = nums[0];
+    for (int i = 1; i < len; i++) {
+        if (nums[i] < smallestValue) {
+            smallestValue = nums[i];
         }
     }
     return smallestValue;
@@ -516,6 +729,20 @@ export const challenges: Challenge[] = [
     }
     return false;
 }`,
+      sql: `-- Check if a value exists in a table
+SELECT EXISTS (
+    SELECT 1 FROM numbers WHERE value = 4
+) AS contains_target;`,
+      c: `#include <stdbool.h>
+
+bool containsTarget(int *nums, int len, int target) {
+    for (int i = 0; i < len; i++) {
+        if (nums[i] == target) {
+            return true;
+        }
+    }
+    return false;
+}`,
     },
   },
 
@@ -542,6 +769,29 @@ export const challenges: Challenge[] = [
       java: `public static boolean isPalindrome(String s) {
     String clean = s.toLowerCase().replaceAll("\\\\s", "");
     return clean.equals(new StringBuilder(clean).reverse().toString());
+}`,
+      sql: `-- Palindrome check in SQL
+SELECT CASE
+    WHEN REPLACE(LOWER('racecar'), ' ', '') =
+         REVERSE(REPLACE(LOWER('racecar'), ' ', ''))
+    THEN 'true' ELSE 'false'
+END AS is_palindrome;`,
+      c: `#include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
+
+bool isPalindrome(const char *s) {
+    char clean[256];
+    int len = 0;
+    for (int i = 0; s[i]; i++) {
+        if (!isspace(s[i]))
+            clean[len++] = tolower(s[i]);
+    }
+    for (int i = 0; i < len / 2; i++) {
+        if (clean[i] != clean[len - 1 - i])
+            return false;
+    }
+    return true;
 }`,
     },
   },
@@ -589,6 +839,48 @@ export const challenges: Challenge[] = [
     }
     return maxLen;
 }`,
+      sql: `-- Longest substring without repeats (procedural SQL)
+CREATE FUNCTION longest_substring(s VARCHAR(255))
+RETURNS INT AS $$
+DECLARE
+    start_pos INT := 0;
+    max_len INT := 0;
+    i INT;
+    ch CHAR;
+    last_seen INT;
+BEGIN
+    CREATE TEMP TABLE seen (c CHAR PRIMARY KEY, pos INT);
+    FOR i IN 1..LENGTH(s) LOOP
+        ch := SUBSTRING(s FROM i FOR 1);
+        SELECT pos INTO last_seen FROM seen WHERE c = ch;
+        IF FOUND AND last_seen >= start_pos THEN
+            start_pos := last_seen + 1;
+        END IF;
+        INSERT INTO seen VALUES (ch, i)
+            ON CONFLICT (c) DO UPDATE SET pos = i;
+        max_len := GREATEST(max_len, i - start_pos);
+    END LOOP;
+    DROP TABLE seen;
+    RETURN max_len;
+END;
+$$ LANGUAGE plpgsql;`,
+      c: `#include <string.h>
+
+int longestSubstring(const char *s) {
+    int seen[256];
+    memset(seen, -1, sizeof(seen));
+    int start = 0, maxLen = 0;
+    for (int i = 0; s[i]; i++) {
+        unsigned char ch = s[i];
+        if (seen[ch] >= start) {
+            start = seen[ch] + 1;
+        }
+        seen[ch] = i;
+        int len = i - start + 1;
+        if (len > maxLen) maxLen = len;
+    }
+    return maxLen;
+}`,
     },
   },
   {
@@ -612,6 +904,36 @@ export const challenges: Challenge[] = [
     String[] words = s.trim().split("\\\\s+");
     Collections.reverse(Arrays.asList(words));
     return String.join(" ", words);
+}`,
+      sql: `-- Reverse word order in SQL using string splitting
+WITH words AS (
+    SELECT ROW_NUMBER() OVER () AS pos,
+           word
+    FROM unnest(string_to_array(
+        TRIM('  the sky is blue  '), ' '
+    )) AS word
+    WHERE word != ''
+)
+SELECT STRING_AGG(word, ' ' ORDER BY pos DESC)
+    AS reversed FROM words;`,
+      c: `#include <stdio.h>
+#include <string.h>
+
+void reverseWords(const char *s, char *result) {
+    char buf[256];
+    strcpy(buf, s);
+    char *words[64];
+    int count = 0;
+    char *tok = strtok(buf, " ");
+    while (tok) {
+        words[count++] = tok;
+        tok = strtok(NULL, " ");
+    }
+    result[0] = '\\0';
+    for (int i = count - 1; i >= 0; i--) {
+        strcat(result, words[i]);
+        if (i > 0) strcat(result, " ");
+    }
 }`,
     },
   },
@@ -656,6 +978,31 @@ export const challenges: Challenge[] = [
     }
     return new int[]{};
 }`,
+      sql: `-- Two sum using a self-join on a numbered table
+WITH indexed AS (
+    SELECT ROW_NUMBER() OVER () - 1 AS idx, value
+    FROM nums_table
+)
+SELECT a.idx AS i, b.idx AS j
+FROM indexed a
+JOIN indexed b ON a.idx < b.idx
+WHERE a.value + b.value = 9 -- replace 9 with target
+LIMIT 1;`,
+      c: `#include <string.h>
+
+void twoSum(int *nums, int len, int target, int *result) {
+    for (int i = 0; i < len; i++) {
+        for (int j = i + 1; j < len; j++) {
+            if (nums[i] + nums[j] == target) {
+                result[0] = i;
+                result[1] = j;
+                return;
+            }
+        }
+    }
+    result[0] = -1;
+    result[1] = -1;
+}`,
     },
   },
   {
@@ -690,6 +1037,36 @@ export const challenges: Challenge[] = [
     Arrays.sort(b);
     return Arrays.equals(a, b);
 }`,
+      sql: `-- Check anagram by comparing sorted characters
+WITH chars_s AS (
+    SELECT ch FROM unnest(string_to_array('listen', NULL)) AS ch
+    ORDER BY ch
+),
+chars_t AS (
+    SELECT ch FROM unnest(string_to_array('silent', NULL)) AS ch
+    ORDER BY ch
+)
+SELECT (SELECT STRING_AGG(ch, '') FROM chars_s) =
+       (SELECT STRING_AGG(ch, '') FROM chars_t)
+    AS is_anagram;`,
+      c: `#include <string.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+int cmpChar(const void *a, const void *b) {
+    return *(char*)a - *(char*)b;
+}
+
+bool isAnagram(const char *s, const char *t) {
+    int lenS = strlen(s), lenT = strlen(t);
+    if (lenS != lenT) return false;
+    char a[256], b[256];
+    strcpy(a, s);
+    strcpy(b, t);
+    qsort(a, lenS, sizeof(char), cmpChar);
+    qsort(b, lenT, sizeof(char), cmpChar);
+    return strcmp(a, b) == 0;
+}`,
     },
   },
 
@@ -714,6 +1091,34 @@ export const challenges: Challenge[] = [
       java: `public static int maxDepth(TreeNode root) {
     if (root == null) return 0;
     return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+}`,
+      sql: `-- Max depth of a tree stored as adjacency list
+CREATE TABLE tree (
+    id INT PRIMARY KEY,
+    parent_id INT REFERENCES tree(id),
+    val INT
+);
+
+WITH RECURSIVE depths AS (
+    SELECT id, 1 AS depth FROM tree WHERE parent_id IS NULL
+    UNION ALL
+    SELECT t.id, d.depth + 1
+    FROM tree t JOIN depths d ON t.parent_id = d.id
+)
+SELECT MAX(depth) AS max_depth FROM depths;`,
+      c: `#include <stddef.h>
+
+typedef struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+} TreeNode;
+
+int maxDepth(TreeNode *root) {
+    if (root == NULL) return 0;
+    int l = maxDepth(root->left);
+    int r = maxDepth(root->right);
+    return 1 + (l > r ? l : r);
 }`,
     },
   },
@@ -746,6 +1151,33 @@ export const challenges: Challenge[] = [
     TreeNode temp = root.left;
     root.left = invertTree(root.right);
     root.right = invertTree(temp);
+    return root;
+}`,
+      sql: `-- Invert tree stored as adjacency list
+-- Swap left_id and right_id columns
+UPDATE binary_tree
+SET left_id = right_id,
+    right_id = left_id;
+
+-- Or for a table with child-position tracking:
+UPDATE tree_nodes
+SET position = CASE
+    WHEN position = 'left' THEN 'right'
+    WHEN position = 'right' THEN 'left'
+END;`,
+      c: `#include <stddef.h>
+
+typedef struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+} TreeNode;
+
+TreeNode* invertTree(TreeNode *root) {
+    if (root == NULL) return NULL;
+    TreeNode *temp = root->left;
+    root->left = invertTree(root->right);
+    root->right = invertTree(temp);
     return root;
 }`,
     },
@@ -797,6 +1229,26 @@ export const challenges: Challenge[] = [
         }
     }
     return arr;
+}`,
+      sql: `-- SQL handles sorting natively with ORDER BY
+SELECT value FROM numbers ORDER BY value ASC;
+
+-- Bubble sort is not needed in SQL since
+-- the query optimizer sorts efficiently.
+-- But you can observe ordering behavior:
+SELECT value,
+       ROW_NUMBER() OVER (ORDER BY value) AS sorted_pos
+FROM numbers;`,
+      c: `void bubbleSort(int *arr, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
 }`,
     },
   },
@@ -868,6 +1320,42 @@ private static int[] merge(int[] left, int[] right) {
     while (i < left.length) result[k++] = left[i++];
     while (j < right.length) result[k++] = right[j++];
     return result;
+}`,
+      sql: `-- SQL sorts declaratively — merge sort logic is internal
+-- Use ORDER BY for sorted results:
+SELECT value FROM numbers ORDER BY value ASC;
+
+-- To merge two sorted result sets:
+(SELECT value FROM list_a)
+UNION ALL
+(SELECT value FROM list_b)
+ORDER BY value ASC;`,
+      c: `#include <string.h>
+#include <stdlib.h>
+
+void merge(int *arr, int l, int m, int r) {
+    int n1 = m - l + 1, n2 = r - m;
+    int *L = malloc(n1 * sizeof(int));
+    int *R = malloc(n2 * sizeof(int));
+    memcpy(L, arr + l, n1 * sizeof(int));
+    memcpy(R, arr + m + 1, n2 * sizeof(int));
+    int i = 0, j = 0, k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) arr[k++] = L[i++];
+        else arr[k++] = R[j++];
+    }
+    while (i < n1) arr[k++] = L[i++];
+    while (j < n2) arr[k++] = R[j++];
+    free(L); free(R);
+}
+
+void mergeSort(int *arr, int l, int r) {
+    if (l < r) {
+        int m = l + (r - l) / 2;
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        merge(arr, l, m, r);
+    }
 }`,
     },
   },

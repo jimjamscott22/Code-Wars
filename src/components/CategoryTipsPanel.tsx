@@ -100,6 +100,24 @@ const CATEGORY_SNIPPETS: Record<Category, Record<Language, Snippet>> = {
     public int getValue() { return value; }
 }`,
     },
+    sql: {
+      title: 'CASE conditional pattern',
+      code: `SELECT value,
+    CASE
+        WHEN value > 0 THEN 'positive'
+        WHEN value < 0 THEN 'negative'
+        ELSE 'zero'
+    END AS label
+FROM numbers;`,
+    },
+    c: {
+      title: 'Function + conditional pattern',
+      code: `const char* classify(int n) {
+    if (n > 0) return "positive";
+    if (n < 0) return "negative";
+    return "zero";
+}`,
+    },
   },
   strings: {
     python: {
@@ -118,6 +136,22 @@ const CATEGORY_SNIPPETS: Record<Category, Record<Language, Snippet>> = {
       title: 'String cleanup pattern',
       code: `public static String normalize(String text) {
     return text.toLowerCase().replaceAll("\\\\s+", "");
+}`,
+    },
+    sql: {
+      title: 'String functions pattern',
+      code: `SELECT LOWER(REPLACE(name, ' ', ''))
+    AS cleaned
+FROM users;
+
+SELECT REVERSE('hello') AS reversed;`,
+    },
+    c: {
+      title: 'Character-by-character loop',
+      code: `#include <ctype.h>
+void toLowerStr(char *s) {
+    for (int i = 0; s[i]; i++)
+        s[i] = tolower(s[i]);
 }`,
     },
   },
@@ -151,6 +185,20 @@ if (counts.containsKey("apple")) {
     int value = counts.get("apple");
 }`,
     },
+    sql: {
+      title: 'GROUP BY frequency count',
+      code: `SELECT word, COUNT(*) AS freq
+FROM words_table
+GROUP BY word
+ORDER BY freq DESC;`,
+    },
+    c: {
+      title: 'Array-based frequency map',
+      code: `void countChars(const char *s, int counts[256]) {
+    for (int i = 0; s[i]; i++)
+        counts[(unsigned char)s[i]]++;
+}`,
+    },
   },
   trees: {
     python: {
@@ -172,6 +220,32 @@ if (counts.containsKey("apple")) {
       code: `public static int maxDepth(TreeNode node) {
     if (node == null) return 0;
     return 1 + Math.max(maxDepth(node.left), maxDepth(node.right));
+}`,
+    },
+    sql: {
+      title: 'Recursive CTE tree traversal',
+      code: `WITH RECURSIVE tree_depth AS (
+    SELECT id, 1 AS depth
+    FROM tree WHERE parent_id IS NULL
+    UNION ALL
+    SELECT t.id, d.depth + 1
+    FROM tree t JOIN tree_depth d
+    ON t.parent_id = d.id
+)
+SELECT MAX(depth) FROM tree_depth;`,
+    },
+    c: {
+      title: 'Recursive tree in C with structs',
+      code: `typedef struct Node {
+    int val;
+    struct Node *left, *right;
+} Node;
+
+int maxDepth(Node *n) {
+    if (!n) return 0;
+    int l = maxDepth(n->left);
+    int r = maxDepth(n->right);
+    return 1 + (l > r ? l : r);
 }`,
     },
   },
@@ -210,6 +284,25 @@ if (counts.containsKey("apple")) {
             arr[j + 1] = tmp;
         }
     }
+}`,
+    },
+    sql: {
+      title: 'ORDER BY with ranking',
+      code: `SELECT value,
+    ROW_NUMBER() OVER (ORDER BY value ASC)
+        AS sorted_rank
+FROM numbers;`,
+    },
+    c: {
+      title: 'Swap pattern in C',
+      code: `void bubbleSort(int *arr, int n) {
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n-i-1; j++)
+            if (arr[j] > arr[j+1]) {
+                int t = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = t;
+            }
 }`,
     },
   },

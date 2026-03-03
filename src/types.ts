@@ -1,4 +1,4 @@
-export type Language = 'python' | 'javascript' | 'java'
+export type Language = 'python' | 'javascript' | 'java' | 'sql' | 'c'
 
 export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced'
 
@@ -16,9 +16,11 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   python: 'Python',
   javascript: 'JavaScript',
   java: 'Java',
+  sql: 'SQL',
+  c: 'C',
 }
 
-export const LANGUAGES: Language[] = ['python', 'javascript', 'java']
+export const LANGUAGES: Language[] = ['python', 'javascript', 'java', 'sql', 'c']
 export const CATEGORIES: Category[] = ['basics', 'strings', 'hash-maps', 'trees', 'sorting']
 
 export interface Challenge {

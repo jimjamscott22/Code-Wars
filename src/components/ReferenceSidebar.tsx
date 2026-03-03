@@ -67,6 +67,40 @@ const REFERENCE_LINKS: Record<Language, ReferenceLink[]> = {
       description: 'Quick examples and interview-style Java topics.',
     },
   ],
+  sql: [
+    {
+      label: 'PostgreSQL Docs',
+      url: 'https://www.postgresql.org/docs/',
+      description: 'Official PostgreSQL reference and tutorial documentation.',
+    },
+    {
+      label: 'SQLBolt',
+      url: 'https://sqlbolt.com/',
+      description: 'Interactive SQL lessons and exercises for all levels.',
+    },
+    {
+      label: 'W3Schools SQL',
+      url: 'https://www.w3schools.com/sql/',
+      description: 'Quick SQL syntax reference with try-it-yourself examples.',
+    },
+  ],
+  c: [
+    {
+      label: 'C Reference (cppreference)',
+      url: 'https://en.cppreference.com/w/c',
+      description: 'Comprehensive C standard library and language reference.',
+    },
+    {
+      label: 'Learn-C.org',
+      url: 'https://www.learn-c.org/',
+      description: 'Interactive C tutorials covering basics through advanced topics.',
+    },
+    {
+      label: 'GeeksforGeeks C',
+      url: 'https://www.geeksforgeeks.org/c-programming-language/',
+      description: 'C programming examples, data structures, and interview prep.',
+    },
+  ],
 }
 
 type NotesByLanguage = Record<Language, string>
@@ -76,17 +110,19 @@ function getInitialNotes(): NotesByLanguage {
     python: '',
     javascript: '',
     java: '',
+    sql: '',
+    c: '',
   }
 
   try {
     const raw = window.localStorage.getItem(NOTES_STORAGE_KEY)
     if (!raw) return emptyNotes
     const parsed = JSON.parse(raw) as Partial<NotesByLanguage>
-    return {
-      python: parsed.python ?? '',
-      javascript: parsed.javascript ?? '',
-      java: parsed.java ?? '',
+    const result = { ...emptyNotes }
+    for (const lang of LANGUAGES) {
+      if (parsed[lang]) result[lang] = parsed[lang]
     }
+    return result
   } catch {
     return emptyNotes
   }
